@@ -1,0 +1,171 @@
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = imgElement.naturalWidth;
+            canvas.height = imgElement.naturalHeight;
+            
+            if (toolId === 'grayscale') ctx.filter = 'grayscale(100%)';
+            if (toolId === 'blur') ctx.filter = 'blur(5px)';
+            
+            ctx.drawImage(imgElement, 0, 0);
+            updateProgress(60, 'Encoding...');
+
+            let mime = 'image/jpeg', ext = 'jpg';
+            if (toolId === 'jpg-png') { mime = 'image/png'; ext = 'png'; }
+            
+            canvas.toBlob((blob) => {
+                showDownload(blob, `converted.${ext}`);
+                updateProgress(100, 'Done!');
+            }, mime, 0.9);
+        }
+
+        function setupCompression(file, preview, controls) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'max-h-[300px] mx-auto rounded-lg';
+            preview.appendChild(img);
+
+            controls.classList.remove('hidden');
+            controls.innerHTML = `
+                <div class="max-w-md mx-auto">
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        <button class="bg-slate-700 hover:bg-sky-600 px-4 py-2 rounded text-sm text-white transition" onclick="window.targetKB=20">20 KB</button>
+                        <button class="bg-slate-700 hover:bg-sky-600 px-4 py-2 rounded text-sm text-white transition" onclick="window.targetKB=50">50 KB</button>
+                        <input type="number" placeholder="Custom KB" class="bg-slate-900 border border-slate-600 rounded px-2 text-white text-sm" onchange="window.targetKB=this.value"/>
+                    </div>
+                    <button id="compress-btn" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg font-bold shadow-lg shadow-sky-500/20">Compress Now</button>
+                </div>
+            `;
+            window.targetKB = 50;
+            document.getElementById('compress-btn').onclick = async () => {
+                updateProgress(10, 'Analyzing...');
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                ctx.drawImage(img, 0, 0);
+
+                let quality = 0.9, iterations = 0;
+                const targetBytes = window.targetKB * 1024;
+                const attempt = () => {
+                    canvas.toBlob((b) => {
+                        updateProgress(20 + iterations * 5, `Optimizing... ${(b.size/1024).toFixed(1)}KB`);
+                        if (b.size > targetBytes && quality > 0.1 && iterations < 20) {
+                            quality -= 0.05; iterations++; attempt();
+                        } else {
+                            showDownload(b, `compressed_${window.targetKB}kb.jpg`);
+                            updateProgress(100, 'Done!');
+                        }
+                    }, 'image/jpeg', quality);
+                };
+                attempt();
+            };
+        }
+
+        function setupImgToPdf(files, preview, controls) {
+            preview.innerHTML = `<div class="text-center text-white dark:text-slate-200">${files.length} images selected.</div>`;
+            controls.classList.remove('hidden');
+            controls.innerHTML = `<button onclick="processImgToPdf()" class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded mx-auto block shadow-lg">Create PDF</button>`;
+            window.pdfFiles = files;
+        }
+
+        async function processImgToPdf() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            updateProgress(10, 'Initializing PDF...');
+            for (let i = 0; i < window.pdfFiles.length; i++) {
+                updateProgress(10 + (i/window.pdfFiles.length)*80, `Adding Image ${i+1}...`);
+                const file = window.pdfFiles[i];
+                const imgData = await readFileAsDataURL(file);
+                const imgProps = doc.getImageProperties(imgData);
+                const pdfWidth = doc.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                if (i > 0) doc.addPage();
+                doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            }
+            doc.save('converted_images.pdf');
+            updateProgress(100, 'Downloaded!');
+            showDownload(null, null, true);
+        }
+
+        function updateProgress(percent, text) {
+            const sb = document.querySelector('.mt-6');
+            if(sb) sb.classList.remove('hidden');
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('status-text');
+            if(bar) bar.style.width = `${percent}%`;
+            if(txt) txt.innerText = text;
+        }
+
+        function showDownload(blob, filename, justSuccess = false) {
+            const box = document.getElementById('result-box');
+            box.classList.remove('hidden');
+            if(justSuccess) {
+                box.innerHTML = `<div class="text-green-400 text-xl font-bold"><i class="fas fa-check-circle"></i> Success!</div>`;
+                return;
+            }
+            const url = URL.createObjectURL(blob);
+            box.innerHTML = `
+                <div class="glass-card p-4 inline-block rounded-lg border-green-500/30 border">
+                    <p class="text-green-400 font-bold mb-2"><i class="fas fa-check-circle"></i> Complete!</p>
+                    <a href="${url}" download="${filename}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-bold shadow-lg shadow-green-900/50 inline-flex items-center gap-2">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            `;
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ==========================================
+        // UI HELPERS
+        // ==========================================
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function toggleMenu() {
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function closeMobileMenu() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.parentElement.classList.replace('text-yellow-400', 'text-slate-600');
+            } else {
+                html.classList.add('dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeIcon.parentElement.classList.replace('text-slate-600', 'text-yellow-400');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMobileMenu);
+
+        // Init
+        renderSidebar();
+        applyLanguage();
+        renderHome();
+  </script>
+</body>
+</html>
