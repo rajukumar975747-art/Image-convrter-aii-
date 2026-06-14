@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+   <b:include data='blog' name='all-head-content'/>
+    <title><data:blog.pageTitle/></title>
+    <meta content='!' name='fragment'/>
+    <meta content='dynamic' name='blogger-template'/>
+    <meta content='IE=9,chrome=1' http-equiv='X-UA-Compatible'/>
+    <meta content='initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width' name='viewport'/>
+    <b:skin><![CDATA[/*-----------------------------------------------
+Blogger Template Style
+Name: Dynamic Views
+-----------------------------------------------*/]]></b:skin>
+  <meta name="keywords" content="yashipdf, free online image converter, jpg to png, png to jpg, webp to jpg online, heic to jpg converter, compress image to 20kb, compress image to 50kb, resize photo for ssc, resize photo for upsc, reduce image size in kb, photo and signature resizer, image to pdf converter, convert image to pdf, pdf to jpg, webp to png, resize image for instagram, passport size photo maker, image compressor online, convert image to 100kb, best online image tools, fast photo converter, no signup image tool"/>
+    
+  <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>YashiPDF.Online | Free Online Image &amp; PDF Tools (JPG to PNG, WebP, PDF)</title>
+    
+    <meta name="description" content="Free online image compressor, PDF converter, and editing tools. Compress JPEG to 50kb, resize passport photos, convert HEIC to JPG. Privacy focused."/>
+    <meta name="keywords" content="Compress JPEG to 50kb, Resize passport photo under 20kb, Image compressor online, JPG PNG converter, Online PDF tools, PDF to JPG, Free Image Tools"/>
+    <meta name="author" content="Raju"/>
+    <link rel="canonical" href="https://www.yashipdf.online/" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9', 
+                        primaryDark: '#0284c7', 
+                        secondary: '#38bdf8', 
+                        darkbg: '#0b1120', 
+                        lightbg: '#f8fafc', 
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/heic2any"></script>
+
+    <style>
+        body {
+            background-color: #0b1120;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html:not(.dark) body {
+           background-color: #f8fafc;
+           color: #1e293b !important; 
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        html:not(.dark) .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        html:not(.dark) .glass-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8; 
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.15);
+        }
+        html:not(.dark) .glass-card:hover {
+            border-color: #0ea5e9;
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15);
+        }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.5); border-radius: 10px; }
+        .overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .contact-input-field {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: all .2s;
+            background: rgba(15, 23, 42, 0.5);
+            color: white;
+        }
+        html:not(.dark) .contact-input-field {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+        .contact-input-field:focus { border-color: #0ea5e9; box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2); }
+        .send-btn {
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            background: #0ea5e9; color: #fff; font-size: 17px; font-weight: 600; cursor: pointer; transition: .2s;
+        }
+        .send-btn:hover { background: #0284c7; }
+        .page-content h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; color: #f8fafc; }
+        .page-content h3 { font-size: 1.5rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; color: #e2e8f0; }
+        .page-content p { margin-bottom: 1rem; line-height: 1.8; color: #cbd5e1; }
+        .page-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #cbd5e1; }
+        html:not(.dark) .page-content h2 { color: #0f172a; }
+        html:not(.dark) .page-content h3 { color: #1e293b; }
+        html:not(.dark) .page-content p, html:not(.dark) .page-content ul { color: #475569; }
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        .nav-link:hover { color: #38bdf8; }
+        html:not(.dark) .nav-link { color: #64748b; }
+        html:not(.dark) .nav-link:hover { color: #0284c7; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #38bdf8;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after { width: 100%; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col md:flex-row font-sans">
+
+    <div class="fixed top-0 w-full z-50 glass-panel h-16 flex items-center justify-between px-4 md:px-8">
+        <div onclick="router('home')" class="cursor-pointer flex items-center gap-2">
+            <div class="w-8 h-8 rounded bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold">Y</div>
+            <span class="font-heading font-bold text-xl tracking-tight text-white dark:text-white text-slate-800">Yashi<span class="text-sky-500">PDF</span></span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="#" onclick="router('home')" class="nav-link">Home</a>
+            <a href="#" onclick="router('about')" class="nav-link">About</a>
+            <a href="#" onclick="router('contact')" class="nav-link">Contact</a>
+            <div class="relative group">
+                <button class="nav-link flex items-center gap-1">Legal <i class="fas fa-chevron-down text-xs"></i></button>
+                <div class="absolute top-full right-0 mt-2 w-48 bg-slate-800 dark:bg-slate-800 bg-white border border-slate-700 dark:border-slate-700 border-slate-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                    <a href="#" onclick="router('privacy')" class="block px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700">Privacy Policy</a>
+                    <a href="#" onclick="router('terms')" class="block px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700">Terms &amp; Conditions</a>
+                    <a href="#" onclick="router('disclaimer')" class="block px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700">Disclaimer</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-700/50 dark:hover:bg-slate-700/50 hover:bg-slate-200 transition-colors" title="Toggle Theme">
+                <i id="theme-icon" class="fas fa-sun text-yellow-400"></i>
+            </button>
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 text-2xl"><i class="fas fa-bars"></i></button>
+        </div>
+    </div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 glass-panel transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col pt-20 border-r border-white/5">
+        <div class="px-6 mb-4 md:hidden">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Menu</div>
+            <a href="#" onclick="router('home')" class="block py-2 text-slate-300 hover:text-sky-400">Home</a>
+            <a href="#" onclick="router('about')" class="block py-2 text-slate-300 hover:text-sky-400">About Us</a>
+            <a href="#" onclick="router('contact')" class="block py-2 text-slate-300 hover:text-sky-400">Contact</a>
+            <a href="#" onclick="router('privacy')" class="block py-2 text-slate-300 hover:text-sky-400">Privacy Policy</a>
+            <hr class="border-slate-700 my-2"/>
+        </div>
+
+        <div class="px-6 mb-2">
+            <h3 class="text-xs font-bold text-sky-500 uppercase tracking-widest">Tools</h3>
+        </div>
+        <nav class="flex-1 overflow-y-auto custom-scroll px-4 pb-4 space-y-1" id="nav-links"></nav>
+    </aside>
+
+    <div id="overlay" class="fixed inset-0 z-30 overlay hidden"></div>
+
+    <main class="flex-1 md:ml-64 min-h-screen pt-24 pb-12 px-4 md:px-8 overflow-x-hidden">
+        <div class="ad-container max-w-4xl mx-auto rounded-lg mb-8">
+            <span class="ad-label">Advertisement</span>
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'f3a0e73c9f4afe6cd16fada7b6f689af',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/f3a0e73c9f4afe6cd16fada7b6f689af/invoke.js"></script>
+        </div>
+
+        <div id="app-container" class="max-w-6xl mx-auto">
+            <div class="text-center py-20">
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Best Free Image Converter &amp; PDF Tools</h1>
+                <p class="text-lg text-slate-600 dark:text-slate-400">
+                    Convert JPG to PNG, WebP to JPG, and compress images to 50kb easily. 
+                    Our tools are fast, secure, and work entirely in your browser. 
+                    Perfect for government exams and online applications.
+                </p>
+                <p class="mt-4 text-sky-500 font-semibold animate-pulse">Loading Tools... Please wait.</p>
+            </div>
+        </div>
+
+        <div class='blog-posts-section max-w-4xl mx-auto mt-12 p-6 glass-card rounded-xl'>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Latest Articles</h2>
+            <div id='custom-posts-container'>
+                <div class='text-center py-8 text-slate-500 dark:text-slate-400 animate-pulse'>
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Articles fetch ho rahe hain...
+                </div>
+            </div>
+            <div style='display:none;'>
+                <b:section id='main-blog-section' name='Main Blog Posts' showaddelement='yes'>
+                    <b:widget id='Blog1' locked='false' title='Blog Posts' type='Blog' visible='true'></b:widget>
+                </b:section>
+            </div>
+        </div>
+
+        <section id="seo-content" class="max-w-4xl mx-auto mt-20 pt-10 border-t border-slate-800 dark:border-slate-800 border-slate-200">
+            <article class="prose prose-invert prose-lg max-w-none page-content">
+                <h1 class="text-3xl font-heading font-bold mb-6 text-slate-900 dark:text-white">Compress JPEG to 50kb &amp; Resize Images Online - Free Tool</h1>
+                <p>In the digital age, managing files efficiently is crucial. Whether you need to <strong>compress JPEG to 50kb</strong> for a government application, <strong>resize passport photos under 20kb</strong>, or perform a quick <strong>JPG PNG converter</strong> task, privacy and speed are paramount. YashiPDF.Online provides a premium, 100% offline-capable suite of tools.</p>
+                <h3 class="text-xl mt-6 mb-3">Top Features</h3>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Compress JPEG to 50kb:</strong> Exact targeting for uploads.</li>
+                    <li><strong>Online PDF Tools:</strong> Merge, Split, and Lock PDFs.</li>
+                    <li><strong>Privacy Guarantee:</strong> Zero server uploads. Client-side processing.</li>
+                </ul>
+                <h3 class="text-xl font-bold mt-8 mb-4 text-slate-900 dark:text-white">Perfect for Government Exams &amp; Online Applications</h3>
+                <ul class="list-disc pl-5 space-y-3 text-slate-600 dark:text-slate-300">
+                    <li><strong>All-in-One Solution:</strong> Designed specifically for students and job aspirants to handle all document upload requirements in one place.</li>
+                    <li><strong>Exact Size Compression:</strong> Easily <strong>compress JPEG to 50kb</strong> for SSC CGL forms and <strong>resize passport photos under 20kb</strong> for UPSC exams without losing clarity.</li>
+                    <li><strong>Multi-Document Support:</strong> Reduce image size in KB for Railway, PAN Card, and IBPS applications instantly.</li>
+                    <li><strong>Advanced Tools:</strong> Use our high-quality <strong>photo and signature resizer</strong> to meet the specific pixel and size demands of various recruitment portals.</li>
+                    <li><strong>PDF Optimization:</strong> Merge multiple images into one file or <strong>compress PDF file size below 1MB</strong> for smooth document submissions.</li>
+                    <li><strong>Privacy &amp; Speed:</strong> No signup required, 100% secure client-side processing, and fully optimized for mobile devices.</li>
+                </ul>
+            </article>
+        </section>
+
+        <footer class="mt-20 border-t border-slate-800 dark:border-slate-800 border-slate-200 pt-8 pb-8 text-center text-slate-500 text-sm">
+            <div class="flex justify-center gap-6 mb-4 md:hidden">
+                <a href="#" onclick="router('terms')">Terms</a>
+                <a href="#" onclick="router('privacy')">Privacy</a>
+                <a href="#" onclick="router('disclaimer')">Disclaimer</a>
+            </div>
+            <p>&copy; 2026 YashiPDF.Online by Raju. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script>
+        //<![CDATA[
+        const tools = [
+            { id: 'jpg-png', title: 'JPG to PNG', icon: 'fa-image', cat: 'convert', desc: 'Convert JPG images to transparent PNG.' },
+            { id: 'png-jpg', title: 'PNG to JPG', icon: 'fa-file-image', cat: 'convert', desc: 'Convert PNG to high quality JPG.' },
+            { id: 'webp-jpg', title: 'WebP to JPG', icon: 'fa-globe', cat: 'convert', desc: 'Fix compatibility issues with WebP.' },
+            { id: 'heic-jpg', title: 'HEIC to JPG', icon: 'fa-mobile-alt', cat: 'convert', desc: 'Convert iPhone photos to standard JPG.' },
+            { id: 'compress', title: 'Compress Image', icon: 'fa-compress-arrows-alt', cat: 'edit', desc: 'Reduce file size to 20kb, 50kb or custom.' },
+            { id: 'resize', title: 'Resize Image', icon: 'fa-expand', cat: 'edit', desc: 'Change image dimensions (pixels).' },
+            { id: 'crop', title: 'Crop Image', icon: 'fa-crop-simple', cat: 'edit', desc: 'Cut out specific parts of an image.' },
+            { id: 'grayscale', title: 'Grayscale', icon: 'fa-filter', cat: 'filter', desc: 'Convert image to black and white.' },
+            { id: 'blur', title: 'Blur Image', icon: 'fa-droplet', cat: 'filter', desc: 'Apply Gaussian blur effect.' },
+            { id: 'img-pdf', title: 'Images to PDF', icon: 'fa-file-pdf', cat: 'pdf', desc: 'Combine multiple images into one PDF.' },
+            { id: 'pdf-split', title: 'Split PDF', icon: 'fa-scissors', cat: 'pdf', desc: 'Extract pages from PDF documents.' },
+            { id: 'pdf-lock', title: 'Lock PDF', icon: 'fa-lock', cat: 'pdf', desc: 'Add password protection to PDF.' },
+            { id: 'qr-gen', title: 'QR Generator', icon: 'fa-qrcode', cat: 'util', desc: 'Create custom QR codes instantly.' },
+            { id: 'remove-bg', title: 'Remove White BG', icon: 'fa-eraser', cat: 'edit', desc: 'Make white background transparent.' },
+            { id: 'sepia', title: 'Sepia Filter', icon: 'fa-palette', cat: 'filter', desc: 'Vintage photo effect.' },
+            { id: 'invert', title: 'Invert Colors', icon: 'fa-adjust', cat: 'filter', desc: 'Invert image colors.' },
+            { id: 'base64-img', title: 'Base64 to Image', icon: 'fa-code', cat: 'util', desc: 'Decode Base64 strings.' },
+            { id: 'img-base64', title: 'Image to Base64', icon: 'fa-code', cat: 'util', desc: 'Encode image to string.' }
+        ];
+
+        // Updated inner content fields with YashiPDF.Online
+        const pageContent = {
+            'about': `
+                <div class="glass-card p-8 rounded-xl page-content animate-fade-in">
+                    <h2>About Us</h2>
+                    <p><strong>Hi, I'm Raju.</strong></p>
+                    <p>Welcome to <strong>YashiPDF.Online</strong>!</p>
+                    <p>I am a tech enthusiast and a student currently pursuing my <strong>BCA in Artificial Intelligence and Machine Learning (AI/ML)</strong>. I built this website with a simple goal: to provide free, fast, and easy-to-use tools for everyone on the internet.</p>
+                    <h3>My Journey</h3>
+                    <p>Since the beginning, I have had a deep curiosity about how technology works. This curiosity turned into a passion for coding and development. As I learned more about AI and software development, I realized the need for a simple platform where people can easily handle their documents and images without any hassle. That's how "YashiPDF.Online" was born.</p>
+                    <h3>Beyond the Code</h3>
+                    <p>While technology is my profession, I believe in living a balanced life. When I am not coding or training AI models, you will likely find me reading an interesting book, traveling to new places, or enjoying a good movie.</p>
+                    <p>Thank you for visiting my site. I hope these tools make your digital life a little easier!</p>
+                    <p>For any suggestions, feedback, or inquiries, feel free to reach out to me.<br><strong>rajukumar975747@gmail.com</strong></p>
+                </div>
+            `,
+            'contact': `
+                <div class="glass-card p-8 rounded-xl max-w-2xl mx-auto page-content animate-fade-in">
+                    <h2>Contact</h2>
+                    <p class="mb-6">Have a question or suggestion? Send us a message.</p>
+                    <form action="https://formsubmit.co/rajukumar975747@gmail.com" method="POST">
+                        <input name="_subject" type="hidden" value="New Contact Message - YashiPDF.Online" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input class="contact-input-field" name="name" placeholder="Name*" required="" type="text" />
+                            <input class="contact-input-field" name="email" placeholder="Email*" required="" type="email" />
+                        </div>
+                        <div class="mb-4">
+                            <textarea class="contact-input-field" name="message" placeholder="Message*" required="" rows="6"></textarea>
+                        </div>
+                        <button class="send-btn" type="submit">Send Message</button>
+                    </form>
+                </div>
+            `,
+            'disclaimer': `
+                <div class="glass-card p-8 rounded-xl page-content animate-fade-in">
+                    <h2>Disclaimer for YashiPDF.Online</h2>
+                    <p>All the information on this website is published in good faith and for general information purpose only. YashiPDF.Online does not make any warranties about the completeness, reliability and accuracy of this information.</p>
+                </div>
+            `,
+            'privacy': `
+                <div class="glass-card p-8 rounded-xl page-content animate-fade-in">
+                    <h2>Privacy Policy for YashiPDF.Online</h2>
+                    <p>At YashiPDF.Online, one of our main priorities is the privacy of our visitors. Any image or PDF file you upload is processed automatically in your browser (Client-Side) and is not stored permanently on our servers.</p>
+                </div>
+            `,
+            'terms': `
+                <div class="glass-card p-8 rounded-xl page-content animate-fade-in">
+                    <h2>Terms and Conditions</h2>
+                    <p>Welcome to YashiPDF.Online! By accessing this website we assume you accept these terms and conditions.</p>
+                </div>
+            `
+        };
+
+        const appContainer = document.getElementById('app-container');
+        const navLinks = document.getElementById('nav-links');
+        const seoContent = document.getElementById('seo-content');
+        
+        function renderSidebar() {
+            const categories = { 'convert': 'Conversion', 'edit': 'Editing', 'filter': 'Filters', 'pdf': 'PDF Tools', 'util': 'Utilities' };
+            navLinks.innerHTML = '';
+            for (const [catCode, catName] of Object.entries(categories)) {
+                const group = document.createElement('div');
+                group.className = 'mb-4';
+                group.innerHTML = `<div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-2">${catName}</div>`;
+                
+                tools.filter(t => t.cat === catCode).forEach(tool => {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'block px-2 py-2 text-sm text-slate-700 dark:text-slate-400 hover:bg-sky-500/10 hover:text-sky-400 rounded-md transition-colors flex items-center gap-3';
+                    link.innerHTML = `<i class="fas ${tool.icon} w-4 text-center"></i> ${tool.title}`;
+                    link.onclick = (e) => { e.preventDefault(); router('tool', tool.id); closeMobileMenu(); };
+                    group.appendChild(link);
+                });
+                navLinks.appendChild(group);
+            }
+        }
+
+        function router(view, param = null) {
+            appContainer.innerHTML = '';
+            window.scrollTo(0,0);
+            closeMobileMenu();
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('text-sky-400'));
+
+            if (view === 'home') {
+                renderHome();
+                seoContent.style.display = 'block';
+            } else if (view === 'tool') {
+                renderToolInterface(param);
+                seoContent.style.display = 'none';
+            } else if (pageContent[view]) {
+                appContainer.innerHTML = `<div class="pt-6 animate-fade-in">${pageContent[view]}</div>`;
+                seoContent.style.display = 'none';
+            }
+        }
+
+        function renderHome() {
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+            
+            tools.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-6 rounded-xl cursor-pointer group';
+                card.onclick = () => router('tool', tool.id);
+                card.innerHTML = `
+                    <div class="flex flex-col h-full justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-lg bg-sky-500/10 flex items-center justify-center mb-4 text-sky-500 text-xl group-hover:bg-sky-500 group-hover:text-white transition-all duration-300">
+                                <i class="fas ${tool.icon}"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-sky-500 transition-colors">${tool.title}</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">${tool.desc}</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/50 flex items-center text-sky-500 text-xs font-bold uppercase tracking-wider">
+                            Use Tool <i class="fas fa-chevron-right ml-2 text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            const hero = document.createElement('div');
+            hero.className = 'text-center mb-12';
+            hero.innerHTML = `
+                <h1 class="text-4xl md:text-5xl font-bold font-heading mb-4 text-slate-900 dark:text-white">All-in-One <span class="text-sky-500">PDF &amp; Image</span> Tools</h1>
+                <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">Make use of 30+ premium tools completely free. No software download, no server uploads, no file limits.</p>
+            `;
+            
+            appContainer.appendChild(hero);
+            appContainer.appendChild(grid);
+        }
+
+        function loadLatestArticles() {
+            const container = document.getElementById('custom-posts-container');
+            if (!container) return;
+
+            fetch('/feeds/posts/default?alt=json&max-results=6')
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load feed');
+                    return response.json();
+                })
+                .then(data => {
+                    let htmlArr = ['<div class="grid grid-cols-1 md:grid-cols-2 gap-6">'];
+                    let entries = data.feed.entry || [];
+                    
+                    if (entries.length === 0) {
+                        container.innerHTML = "<p class='text-center text-slate-500 py-6'>No articles published yet.</p>";
+                        return;
+                    }
+
+                    entries.forEach(entry => {
+                        let title = entry.title.$t;
+                        let postLink = "#";
+                        for (let i = 0; i < entry.link.length; i++) {
+                            if (entry.link[i].rel === 'alternate') {
+                                postLink = entry.link[i].href;
+                                break;
+                            }
+                        }
+                        
+                        let thumbUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=60";
+                        if (entry.media$thumbnail) {
+                            thumbUrl = entry.media$thumbnail.url.replace('s72-c', 'w600-h400-c');
+                        } else if (entry.content && entry.content.$t.includes('<img')) {
+                            let dummyDiv = document.createElement('div');
+                            dummyDiv.innerHTML = entry.content.$t;
+                            let imageTag = dummyDiv.querySelector('img');
+                            if (imageTag) thumbUrl = imageTag.src;
+                        }
+
+                        let textBlock = entry.summary ? entry.summary.$t : (entry.content ? entry.content.$t.replace(/<[^>]*>/g, '').substring(0, 130) + '...' : '');
+
+                        htmlArr.push(
+                            '<div class="glass-card p-4 rounded-xl flex flex-col justify-between border border-slate-100 dark:border-slate-800/60 transition-all duration-300 hover:-translate-y-1 hover:border-sky-500">' +
+                                '<div>' +
+                                    '<a href="' + postLink + '">' +
+                                        '<img src="' + thumbUrl + '" alt="' + title + '" class="w-full h-48 object-cover rounded-lg mb-4 border border-slate-100 dark:border-slate-800/50"/>' +
+                                    '</a>' +
+                                    '<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">' +
+                                        '<a href="' + postLink + '" class="hover:text-sky-500 transition-colors">' + title + '</a>' +
+                                    '</h3>' +
+                                    '<p class="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">' + textBlock + '</p>' +
+                                '</div>' +
+                                '<div class="pt-2">' +
+                                    '<a href="' + postLink + '" class="inline-flex items-center gap-2 text-sky-500 text-xs font-bold uppercase tracking-wider hover:text-sky-400">' +
+                                        'Read Article <i class="fas fa-arrow-right text-[10px]"></i>' +
+                                    '</a>' +
+                                '</div>' +
+                            '</div>'
+                        );
+                    });
+
+                    htmlArr.push('</div>');
+                    container.innerHTML = htmlArr.join('');
+                })
+                .catch(error => {
+                    console.error('Error string parsing posts:', error);
+                    container.innerHTML = "<p class='text-center text-red-500 py-6'>Articles load karne mein samasya aa rahi hai.</p>";
+                });
+        }
+
+        function renderToolInterface(toolId) {
+            const tool = tools.find(t => t.id === toolId);
+            const ui = document.createElement('div');
+            ui.className = 'glass-panel p-6 md:p-10 rounded-2xl max-w-4xl mx-auto';
+            ui.innerHTML = `
+                <div class="flex items-center gap-4 mb-8 border-b border-gray-700/50 pb-6">
+                    <button onclick="router('home')" class="text-slate-400 hover:text-white"><i class="fas fa-arrow-left"></i> Back</button>
+                    <h2 class="text-2xl font-bold text-slate-100 dark:text-white"><i class="fas ${tool.icon} text-sky-500 mr-2"></i> ${tool.title}</h2>
+                </div>
+            `;
+
+            const workspace = document.createElement('div');
+            workspace.className = 'flex flex-col items-center justify-center min-h-[300px] border-2 border-dashed border-slate-700 rounded-xl bg-slate-800/30 relative transition-all';
+            workspace.id = 'drop-zone';
+            workspace.innerHTML = `
+                <div class="text-center p-8" id="upload-ui">
+                    <i class="fas fa-cloud-upload-alt text-5xl text-sky-500 mb-4"></i>
+                    <p class="text-xl text-slate-200 dark:text-white mb-2">Drag &amp; Drop files here</p>
+                    <p class="text-sm text-slate-400 mb-6">or click to browse</p>
+                    <input type="file" id="file-input" class="hidden" ${tool.id === 'img-pdf' ? 'multiple' : ''}/>
+                    <button onclick="document.getElementById('file-input').click()" class="bg-sky-500 hover:bg-sky-600 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg shadow-sky-500/30">Select File</button>
+                </div>
+                <div id="preview-area" class="hidden w-full p-4"></div>
+                <div id="controls-area" class="hidden w-full border-t border-gray-700/50 mt-4 p-4"></div>
+            `;
+            ui.appendChild(workspace);
+
+            const statusBox = document.createElement('div');
+            statusBox.className = 'mt-6 hidden';
+            statusBox.innerHTML = `
+                <div class="w-full bg-slate-700 rounded-full h-2.5 mb-2">
+                    <div class="bg-sky-500 h-2.5 rounded-full" style="width: 0%" id="progress-bar"></div>
+                </div>
+                <p class="text-center text-sm text-slate-300" id="status-text">Processing...</p>
+            `;
+            ui.appendChild(statusBox);
+
+            const resultBox = document.createElement('div');
+            resultBox.className = 'mt-6 hidden text-center';
+            resultBox.id = 'result-box';
+            ui.appendChild(resultBox);
+
+            appContainer.appendChild(ui);
+
+            const fileInput = document.getElementById('file-input');
+            const dropZone = document.getElementById('drop-zone');
+            fileInput.addEventListener('change', (e) => handleFileSelect(e.target.files, toolId));
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-sky-500'); });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('border-sky-500'); });
+            dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('border-sky-500'); handleFileSelect(e.dataTransfer.files, toolId); });
+        }
+
+        async function handleFileSelect(files, toolId) {
+            if (files.length === 0) return;
+            const uploadUI = document.getElementById('upload-ui');
+            const previewArea = document.getElementById('preview-area');
+            const controlsArea = document.getElementById('controls-area');
+            uploadUI.classList.add('hidden');
+            previewArea.classList.remove('hidden');
+            previewArea.innerHTML = '';
+
+            if (toolId === 'compress') setupCompression(files[0], previewArea, controlsArea);
+            else if (toolId === 'img-pdf') setupImgToPdf(files, previewArea, controlsArea);
+            else if (['jpg-png', 'png-jpg', 'grayscale', 'blur'].includes(toolId)) setupGenericImageProcess(files[0], toolId, previewArea, controlsArea);
+        }
+
+        function setupGenericImageProcess(file, toolId, preview, controls) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'max-h-[400px] mx-auto rounded-lg shadow-lg';
+            preview.appendChild(img);
+            controls.classList.remove('hidden');
+            controls.innerHTML = `<div class="flex justify-center mt-4"><button id="process-btn" class="bg-sky-500 hover:bg-sky-600 text-white px-8 py-2 rounded-lg font-semibold">Convert / Process</button></div>`;
+            document.getElementById('process-btn').onclick = () => processGenericImage(img, file, toolId);
+        }
+
+        async function processGenericImage(imgElement, originalFile, toolId) {
+            updateProgress(10, 'Loading...');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = imgElement.naturalWidth;
+            canvas.height = imgElement.naturalHeight;
+            if (toolId === 'grayscale') ctx.filter = 'grayscale(100%)';
+            if (toolId === 'blur') ctx.filter = 'blur(5px)';
+            ctx.drawImage(imgElement, 0, 0);
+            updateProgress(60, 'Encoding...');
+
+            let mime = 'image/jpeg', ext = 'jpg';
+            if (toolId === 'jpg-png') { mime = 'image/png'; ext = 'png'; }
+            canvas.toBlob((blob) => { showDownload(blob, `converted.${ext}`); updateProgress(100, 'Done!'); }, mime, 0.9);
+        }
+
+        function setupCompression(file, preview, controls) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'max-h-[300px] mx-auto rounded-lg';
+            preview.appendChild(img);
+            controls.classList.remove('hidden');
+            controls.innerHTML = `
+                <div class="max-w-md mx-auto">
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        <button class="bg-slate-700 hover:bg-sky-600 px-4 py-2 rounded text-sm text-white transition" onclick="window.targetKB=20">20 KB</button>
+                        <button class="bg-slate-700 hover:bg-sky-600 px-4 py-2 rounded text-sm text-white transition" onclick="window.targetKB=50">50 KB</button>
+                        <input type="number" placeholder="Custom KB" class="bg-slate-900 border border-slate-600 rounded px-2 text-white text-sm" onchange="window.targetKB=this.value"/>
+                    </div>
+                    <button id="compress-btn" class="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg font-bold shadow-lg shadow-sky-500/20">Compress Now</button>
+                </div>
+            `;
+            window.targetKB = 50;
+            document.getElementById('compress-btn').onclick = async () => {
+                updateProgress(10, 'Analyzing...');
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                ctx.drawImage(img, 0, 0);
+
+                let quality = 0.9, iterations = 0;
+                const targetBytes = window.targetKB * 1024;
+                const attempt = () => {
+                    canvas.toBlob((b) => {
+                        updateProgress(20 + iterations * 5, `Optimizing... ${(b.size/1024).toFixed(1)}KB`);
+                        if (b.size > targetBytes && quality > 0.1 && iterations < 20) {
+                            quality -= 0.05; iterations++; attempt();
+                        } else {
+                            showDownload(b, `compressed_${window.targetKB}kb.jpg`);
+                            updateProgress(100, 'Done!');
+                        }
+                    }, 'image/jpeg', quality);
+                };
+                attempt();
+            };
+        }
+
+        function setupImgToPdf(files, preview, controls) {
+            preview.innerHTML = `<div class="text-center text-white dark:text-slate-200">${files.length} images selected.</div>`;
+            controls.classList.remove('hidden');
+            controls.innerHTML = `<button onclick="processImgToPdf()" class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded mx-auto block shadow-lg">Create PDF</button>`;
+            window.pdfFiles = files;
+        }
+
+        async function processImgToPdf() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            updateProgress(10, 'Initializing PDF...');
+            for (let i = 0; i < window.pdfFiles.length; i++) {
+                updateProgress(10 + (i/window.pdfFiles.length)*80, `Adding Image ${i+1}...`);
+                const file = window.pdfFiles[i];
+                const imgData = await readFileAsDataURL(file);
+                const imgProps = doc.getImageProperties(imgData);
+                const pdfWidth = doc.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                if (i > 0) doc.addPage();
+                doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            }
+            doc.save('converted_images.pdf');
+            updateProgress(100, 'Downloaded!');
+            showDownload(null, null, true);
+        }
+
+        function updateProgress(percent, text) {
+            const sb = document.querySelector('.mt-6');
+            if(sb) sb.classList.remove('hidden');
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('status-text');
+            if(bar) bar.style.width = `${percent}%`;
+            if(txt) txt.innerText = text;
+        }
+
+        function showDownload(blob, filename, justSuccess = false) {
+            const box = document.getElementById('result-box');
+            box.classList.remove('hidden');
+            if(justSuccess) {
+                box.innerHTML = `<div class="text-green-400 text-xl font-bold"><i class="fas fa-check-circle"></i> Success!</div>`;
+                return;
+            }
+            const url = URL.createObjectURL(blob);
+            box.innerHTML = `
+                <div class="glass-card p-4 inline-block rounded-lg border-green-500/30 border">
+                    <p class="text-green-400 font-bold mb-2"><i class="fas fa-check-circle"></i> Complete!</p>
+                    <a href="${url}" download="${filename}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-bold shadow-lg shadow-green-900/50 inline-flex items-center gap-2">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            `;
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function toggleMenu() {
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function closeMobileMenu() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.parentElement.classList.replace('text-yellow-400', 'text-slate-600');
+            } else {
+                html.classList.add('dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeIcon.parentElement.classList.replace('text-slate-600', 'text-yellow-400');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMobileMenu);
+
+        renderSidebar();
+        renderHome();
+        loadLatestArticles(); 
+        //]]>
+    </script>
+</body>
+</html>
